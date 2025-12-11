@@ -1,0 +1,330 @@
+import React, { useState, useEffect } from 'react';
+import { 
+  MapPin, 
+  Calendar, 
+  Bus, 
+  Gift, 
+  Music, 
+  Mic, 
+  ShoppingBag, 
+  Users, 
+  Utensils, 
+  Camera, 
+  Navigation,
+  Phone,
+  Sparkles,
+  Quote
+} from 'lucide-react';
+import { ScheduleEvent } from './types';
+import { ScheduleItem } from './components/ScheduleItem';
+import { generateTravelBlessing } from './services/geminiService';
+
+// --- Data Constants ---
+const scheduleData: ScheduleEvent[] = [
+  { time: '07:30', title: '出发启程', description: '上海松江招商市场集合出发，开启美好旅程。', icon: Bus },
+  { time: '08:30', title: '抵达现场', description: '抵达嘉兴南湖郁金香大酒店。', icon: MapPin },
+  { time: '08:30-09:00', title: '签到有礼', description: '签到并领取精美伴手礼，感受第一份惊喜。', icon: Gift },
+  { time: '09:00-09:20', title: '文艺演出', description: '精彩开场，视听盛宴。', icon: Music },
+  { time: '09:20-09:30', title: '致辞环节', description: '喜望旅游总经理发表致辞，展望未来。', icon: Mic },
+  { time: '09:30-11:30', title: '新品发布', description: '2026全新旅游线路重磅首发，探索未知。', icon: ShoppingBag },
+  { time: '11:30-11:45', title: '共话未来', description: '与朋友商议2026旅行计划，预定美好。', icon: Users },
+  { time: '11:45-13:00', title: '答谢盛宴', description: '丰盛午宴及激动人心的抽奖活动。', icon: Utensils },
+  { time: '13:00-13:30', title: '前往子城', description: '乘车前往嘉兴子城遗址公园。', icon: Navigation },
+  { time: '13:30-15:00', title: '游览古迹', description: '参观游览子城景区，感受历史韵味。', icon: Camera },
+  { time: '15:00-16:00', title: '满载而归', description: '返回上海松江招商市场，活动圆满结束。', icon: Bus },
+];
+
+const contacts = [
+  { name: '陆加喜', phone: '13671909588' },
+  { name: '吕跃梅', phone: '15821509698' },
+];
+
+const App: React.FC = () => {
+  const [blessing, setBlessing] = useState<string>('');
+  const [loadingBlessing, setLoadingBlessing] = useState(false);
+
+  const handleGetBlessing = async () => {
+    setLoadingBlessing(true);
+    const text = await generateTravelBlessing();
+    setBlessing(text);
+    setLoadingBlessing(false);
+  };
+
+  useEffect(() => {
+    // Generate an initial blessing on mount roughly 50% of the time, or wait for user
+    // Let's just wait for user interaction to save tokens, but show a default welcome.
+  }, []);
+
+  return (
+    <div className="min-h-screen bg-[#FDFBF7] text-slate-800 font-serif selection:bg-xiwang-red selection:text-white pb-20">
+      
+      {/* --- Hero Section --- */}
+      <header className="relative h-[80vh] w-full overflow-hidden flex items-center justify-center">
+        {/* Background Image with Overlay - Using a misty Chinese landscape image */}
+        <div className="absolute inset-0 z-0">
+          <img 
+            src="https://images.unsplash.com/photo-1508804185872-d7badad00f7d?q=80&w=1920&auto=format&fit=crop" 
+            alt="Misty Chinese Landscape" 
+            className="w-full h-full object-cover animate-[pulse_10s_ease-in-out_infinite]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-[#FDFBF7]"></div>
+        </div>
+
+        {/* Hero Content */}
+        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in-up">
+          <p className="text-white/90 text-xl tracking-[0.3em] mb-4 font-cursive drop-shadow-md">山河远阔 · 满怀喜悦</p>
+          <h1 className="text-5xl md:text-7xl font-bold text-white mb-6 drop-shadow-lg font-serif">
+            喜望旅游<span className="text-xiwang-gold">年会盛典</span>
+          </h1>
+          <p className="text-white/90 text-lg md:text-xl mb-8 font-light italic drop-shadow-md">
+            2025年12月31日 - 2026年1月6日
+          </p>
+          
+          <div className="inline-flex flex-col md:flex-row gap-4 justify-center items-center bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-xl shadow-2xl">
+            <div className="flex items-center gap-3 text-white">
+              <Calendar className="text-xiwang-gold" />
+              <span>跨年狂欢周</span>
+            </div>
+            <div className="hidden md:block w-px h-8 bg-white/30"></div>
+            <div className="flex items-center gap-3 text-white">
+              <MapPin className="text-xiwang-gold" />
+              <span>嘉兴南湖郁金香大酒店</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      {/* --- Invitation Letter Section (Emotional Hook) --- */}
+      <section className="max-w-3xl mx-auto px-6 py-20 text-center relative z-10">
+        <div className="mb-10 flex justify-center">
+          <Quote className="text-xiwang-gold opacity-50 w-12 h-12" />
+        </div>
+        
+        <h2 className="text-3xl font-bold mb-8 text-xiwang-red font-cursive">致 最珍贵的您</h2>
+        
+        <div className="space-y-6 text-lg leading-relaxed text-slate-700">
+          <p>
+            尊敬的嘉宾，您好！
+          </p>
+          <p>
+            时光匆匆，转眼又是一年。在忙碌的生活中，我们是否常常忘记了抬头仰望星空，
+            忘记了给自己一个深呼吸的机会？
+          </p>
+          <p>
+            <span className="font-bold text-slate-900">喜望旅游</span>不仅仅是一个名字，更是一份关于“欢喜”与“希望”的承诺。
+            我们深知，每一次出发，都是为了更好地归来；每一次相聚，都是灵魂深处的共鸣。
+          </p>
+          <p>
+            值此辞旧迎新之际，我们诚挚地邀请您拨冗莅临。这不仅是一场年会，
+            更是一场老友的重逢，一次心灵的休憩。让我们在南湖之畔，共话山河远阔，
+            在郁金香的芬芳中，一同开启2026年的无限可能。
+          </p>
+          <p className="font-bold text-xl text-xiwang-red pt-4">
+            如果不去遍历世界，我们就不知道什么是我们精神和情感的寄托。<br/>
+            来吧，让我们一起出发！
+          </p>
+        </div>
+
+        {/* AI Generator Feature */}
+        <div className="mt-12 p-6 bg-white rounded-2xl shadow-xl border border-orange-100 relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-4 opacity-10">
+            <Sparkles size={100} />
+          </div>
+          <h3 className="text-xl font-bold text-slate-800 mb-2">✨ AI 专属祝福 ✨</h3>
+          <p className="text-sm text-slate-500 mb-4">点击下方按钮，获取您的2026专属旅行签文</p>
+          
+          {blessing && (
+             <div className="mb-6 p-4 bg-orange-50 rounded-lg border-l-4 border-xiwang-gold text-left animate-fade-in-up">
+               <p className="font-cursive text-xl text-slate-800">{blessing}</p>
+             </div>
+          )}
+
+          <button 
+            onClick={handleGetBlessing}
+            disabled={loadingBlessing}
+            className="flex items-center justify-center gap-2 mx-auto bg-gradient-to-r from-xiwang-gold to-orange-500 text-white px-8 py-3 rounded-full hover:shadow-lg transition-all active:scale-95 disabled:opacity-70"
+          >
+            {loadingBlessing ? (
+              <>正在祈福中...</>
+            ) : (
+              <>
+                <Sparkles size={18} />
+                {blessing ? '再求一签' : '抽取新年旅行运势'}
+              </>
+            )}
+          </button>
+        </div>
+      </section>
+
+      {/* --- Scenery Gallery Section (New) --- */}
+      <section className="py-12 bg-white">
+        <div className="max-w-6xl mx-auto px-4">
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <div className="h-px bg-slate-300 w-16"></div>
+            <h2 className="text-3xl font-bold text-slate-800 font-cursive">光影 · 印象</h2>
+            <div className="h-px bg-slate-300 w-16"></div>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div className="group relative overflow-hidden rounded-xl aspect-[4/3] shadow-lg">
+                  {/* Nanhu Representation: Traditional waterside pavilion */}
+                  <img src="https://images.unsplash.com/photo-1548268770-66e27a97682a?q=80&w=600&auto=format&fit=crop" alt="Nanhu Scenery" className="object-cover w-full h-full transform transition duration-700 group-hover:scale-110" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 md:opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-4">
+                    <span className="text-white font-serif tracking-widest">南湖烟雨</span>
+                  </div>
+              </div>
+              <div className="group relative overflow-hidden rounded-xl aspect-[4/3] shadow-lg">
+                   {/* Tulips: Representing the Tulip Hotel theme */}
+                   <img src="https://images.unsplash.com/photo-1588600788645-316277b0d71a?q=80&w=600&auto=format&fit=crop" alt="Tulips" className="object-cover w-full h-full transform transition duration-700 group-hover:scale-110" />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 md:opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-4">
+                    <span className="text-white font-serif tracking-widest">郁金香开</span>
+                  </div>
+              </div>
+              <div className="group relative overflow-hidden rounded-xl aspect-[4/3] shadow-lg">
+                   {/* Ancient Architecture: Representing Zicheng */}
+                   <img src="https://images.unsplash.com/photo-1599571234909-29ed5d1321d6?q=80&w=600&auto=format&fit=crop" alt="Ancient Architecture" className="object-cover w-full h-full transform transition duration-700 group-hover:scale-110" />
+                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-80 md:opacity-0 group-hover:opacity-100 transition duration-500 flex items-end p-4">
+                    <span className="text-white font-serif tracking-widest">古城新韵</span>
+                  </div>
+              </div>
+          </div>
+          <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="group relative overflow-hidden rounded-xl aspect-[16/9] shadow-lg">
+                  {/* Wide Water View */}
+                  <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?q=80&w=800&auto=format&fit=crop" alt="Lake View" className="object-cover w-full h-full transform transition duration-700 group-hover:scale-110" />
+                   <div className="absolute bottom-4 left-4 text-white font-bold text-lg drop-shadow-md bg-black/30 px-3 py-1 rounded backdrop-blur-sm">嘉兴 · 南湖</div>
+              </div>
+              <div className="group relative overflow-hidden rounded-xl aspect-[16/9] shadow-lg">
+                  {/* Ancient Wall/Gate texture */}
+                  <img src="https://images.unsplash.com/photo-1543097692-fa13c6cd8595?q=80&w=800&auto=format&fit=crop" alt="Ancient Wall" className="object-cover w-full h-full transform transition duration-700 group-hover:scale-110" />
+                   <div className="absolute bottom-4 left-4 text-white font-bold text-lg drop-shadow-md bg-black/30 px-3 py-1 rounded backdrop-blur-sm">嘉兴 · 子城遗址</div>
+              </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Schedule Section --- */}
+      <section className="bg-slate-50 py-20 px-4 shadow-inner relative">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-16">
+            <span className="uppercase tracking-widest text-xs text-xiwang-gold font-bold">AGENDA</span>
+            <h2 className="text-4xl font-bold text-slate-900 mt-2 font-serif">盛典流程安排</h2>
+            <div className="w-20 h-1 bg-xiwang-red mx-auto mt-6 rounded-full"></div>
+          </div>
+
+          <div className="relative">
+             {scheduleData.map((event, index) => (
+               <ScheduleItem 
+                 key={index} 
+                 event={event} 
+                 index={index} 
+                 isLast={index === scheduleData.length - 1} 
+               />
+             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* --- Parallax Divider --- */}
+      <section 
+        className="relative h-64 md:h-96 bg-fixed bg-center bg-cover bg-no-repeat flex items-center justify-center" 
+        style={{ backgroundImage: 'url(https://images.unsplash.com/photo-1501785888041-af3ef285b470?q=80&w=1920&auto=format&fit=crop)' }}
+      >
+          <div className="absolute inset-0 bg-black/40"></div>
+          <div className="relative z-10 text-center px-4">
+             <h2 className="text-3xl md:text-5xl text-white font-cursive tracking-widest mb-4">心之所向 · 素履以往</h2>
+             <p className="text-white/80 text-lg font-serif">让每一次旅行，都成为生命中最美的注脚</p>
+          </div>
+      </section>
+
+      {/* --- Location & CTA Section --- */}
+      <section className="py-20 px-6 bg-slate-900 text-white relative">
+        <div className="max-w-4xl mx-auto grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <h2 className="text-3xl font-bold mb-6">期待您的光临</h2>
+            <p className="text-gray-400 mb-8">
+              每一场相遇都是久别重逢。我们已备好薄酒佳肴，只待君来。
+              请提前联系我们报名，以便我们为您安排最贴心的服务。
+            </p>
+            
+            <div className="space-y-6">
+              <div className="flex items-start gap-4">
+                <div className="bg-xiwang-red p-2 rounded-full">
+                  <MapPin size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg">活动地点</h4>
+                  <p className="text-gray-300">嘉兴南湖郁金香大酒店</p>
+                </div>
+              </div>
+              
+              <div className="flex items-start gap-4">
+                <div className="bg-xiwang-red p-2 rounded-full">
+                  <Navigation size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg">报名地址</h4>
+                  <p className="text-gray-300">上海市松江区荣乐中路200号 · 喜望旅游</p>
+                </div>
+              </div>
+
+              <div className="flex items-start gap-4">
+                <div className="bg-xiwang-red p-2 rounded-full">
+                  <Phone size={24} />
+                </div>
+                <div>
+                  <h4 className="font-bold text-lg">报名热线</h4>
+                  <div className="flex flex-col gap-2 mt-1">
+                    {contacts.map((contact, idx) => (
+                      <a 
+                        key={idx}
+                        href={`tel:${contact.phone}`}
+                        className="flex items-center gap-2 text-xl font-mono text-xiwang-gold hover:text-white transition-colors"
+                      >
+                        <span>{contact.name}</span>
+                        <span>{contact.phone}</span>
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative h-96 rounded-2xl overflow-hidden shadow-2xl border-4 border-white/10 group">
+            {/* Hotel Venue Image */}
+            <img 
+               src="https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=800&auto=format&fit=crop" 
+               alt="Luxury Hotel Venue" 
+               className="absolute inset-0 w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+            <div className="absolute bottom-6 left-6">
+              <p className="text-sm font-bold uppercase tracking-widest text-xiwang-gold">VENUE</p>
+              <h3 className="text-2xl font-bold">Jiaxing Nanhu Tulip Hotel</h3>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* --- Footer --- */}
+      <footer className="bg-black text-center py-8 text-gray-600 text-sm">
+        <p>&copy; 2025 喜望旅游 Xiwang Tourism. All Rights Reserved.</p>
+        <p className="mt-2">致力于打造最有温度的旅行体验</p>
+      </footer>
+
+      {/* --- Floating CTA for Mobile --- */}
+      <div className="fixed bottom-6 right-6 md:hidden z-50">
+        <a 
+          href={`tel:${contacts[0].phone}`}
+          className="flex items-center justify-center w-14 h-14 bg-xiwang-red text-white rounded-full shadow-2xl animate-pulse-slow"
+        >
+          <Phone size={24} />
+        </a>
+      </div>
+
+    </div>
+  );
+};
+
+export default App;
